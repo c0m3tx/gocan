@@ -26,7 +26,10 @@ func (u User) Abilities() gocan.Ability {
   // or any other object type
   abilities.Grant(gocan.Read, "target", nil)
 
-  // third parameter is an optional comparison function between user and target
+  // third parameter is an optional comparison function between
+  // ability target and provided target
+  // function has to be a func(interface{}, interface{}) bool
+  // if not defined it's a simple equality comparison
   abilities.Grant("update", User{}, reflect.DeepEquals)
 
   // gocan.Manage is special: includes gocan.Read, gocan.Create,
