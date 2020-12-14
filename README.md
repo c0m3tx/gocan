@@ -20,10 +20,18 @@ func (u User) Abilities() gocan.Ability {
   // By default, no ability is set
   var abilities gocan.Ability
 
-  abilities.Grant("read", "target", nil)
+  // first parameter is a string, it is possible
+  // to use pre-defined gocan constants for basic CRUD functions
+  // second parameter is an interface{}, it's possible to use strings
+  // or any other object type
+  abilities.Grant(gocan.Read, "target", nil)
 
   // third parameter is an optional comparison function between user and target
   abilities.Grant("update", User{}, reflect.DeepEquals)
+
+  // gocan.Manage is special: includes gocan.Read, gocan.Create,
+  // gocan.Update and gocan.Destroy
+  abilities.Grant(gocan.Manage, "some other object", nil))
 
   return abilities
 }
@@ -33,6 +41,7 @@ func DoSmth() {
   gocan.Can(u, "read", "target") // => true
   gocan.Can(u, "update", "target") // => false
   gocan.Can(u, "update", u) // => true
+  gocan.Can(u, "read", "some other object") // => true
 }
 ```
 
